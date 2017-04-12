@@ -1,0 +1,75 @@
+<div class="row">
+  <div class="col-md-6">
+    <h1><%= @recipe.name()%></h1>
+    <% if @recipe.tags.any? %>
+      <ul>
+        <% @recipe.tags.each do |tag|%>
+          <span>#<%= tag.name%> </span>
+          <form action="/tag" method="post">
+            <input type="hidden" name="recipe_id" value="<%=@recipe.id%>">
+            <input type='hidden' name='tag_id' value='<%= tag.id%>'>
+            <input type="hidden" name="_method" value="delete">
+            <button type="submit" class="btn btn-danger">Delete This Tag</button>
+          </form>
+        <%end%>
+      </ul>
+    <%end%>
+    <form action="/tag" method="post">
+      <input type="hidden" name="recipe_id" value="<%=@recipe.id%>">
+      <!-- <input type="hidden" name="recipe_id" value="<%=@recipe.id%>">
+      <input  type='text' name='tag'> -->
+      <select name='tag'>
+        <%@tags.each do |tag|%>
+          <option value="<%=tag.name%>"><%=tag.name%></option>
+        <%end%>
+      </select>
+      <button class="btn" type='submit'>Add Tag to Recipe</button>
+    </form>
+
+    <a href="/recipe/<%=@recipe.id%>/view/?add_new_tag=true" class="btn btn-sm">Create Tag</a>
+    <%if @add_new_tag%>
+      <form action='/tag/new' method='post'>
+        <input type="hidden" name="recipe_id" value="<%=@recipe.id%>">
+        <label for='tag'>Tag</label><br>
+        <input type='text' name='tag' id='name'><br>
+        <button type='submit'>Submit</button>
+      </form>
+    <%end%>
+
+    <h3><%=@average_rating%> <small>(<%=@recipe.ratings.length%> reviews)</small></h3>
+    <textarea readonly style="height:150px;width:500px"><%= @recipe.instructions%></textarea>
+
+    <ul>
+      <% @recipe.ingredients.each do |ingredient|%>
+        <li><%= ingredient.name%></li>
+        <form action="/ingredient" method="post">
+          <input type="hidden" name="recipe_id" value="<%=@recipe.id%>">
+          <input type='hidden' name='ingredient_id' value='<%= ingredient.id%>'>
+          <input type="hidden" name="_method" value="delete">
+          <button type="submit" class="btn btn-danger">Delete This Ingredient</button>
+        </form>
+      <%end%>
+    </ul>
+
+    <form action="/ingredient" method="post">
+      <input type="hidden" name="recipe_id" value="<%=@recipe.id%>">
+      <input  type='text' name='ingredient' id='ingredient'>
+      <button class="btn" type='submit'>Add Ingredient</button>
+    </form>
+
+  </div>
+  <div class="col-md-6">
+    <h4>Reviews</h4>
+    <ul>
+      <% @recipe.ratings.each do |rating|%>
+        <li><b><%=rating.name%></b> <%=rating.score%></li>
+      <%end%>
+    </ul>
+    <form action="/rating" method="post">
+      <input type="hidden" name="recipe_id" value="<%=@recipe.id%>">
+      <input  type='number' name='rating'>
+      <input  type='text' name='user_name'>
+      <button class="btn" type='submit'>Add Rating</button>
+    </form>
+  </div>
+</div>

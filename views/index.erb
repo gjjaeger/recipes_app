@@ -1,0 +1,22 @@
+<h1>Top Recipes</h1>
+<ul>
+  <% @toprecipes.each do |recipe| %>
+    <li><a href="/recipe/<%= recipe['id']%>/view"><b><%= recipe['name']%></b> <%=(recipe['avg']).to_f.round(2)%></a></li>
+  <% end %>
+</ul>
+
+<h1>All Recipes</h1>
+<ul>
+  <% @recipes.each do |recipe| %>
+    <li><b><%= recipe.name%><a href="/recipe/<%= recipe.id%>/view"></b> View this recipe</a></li>
+  <% end %>
+</ul>
+
+  <h3>Create Recipe</h3>
+  <form action='/recipe' method='post'>
+    <label for='name'>Name</label><br>
+    <input type='text' name='name' id='name'><br>
+    <label for='name'>Instructions</label><br>
+    <textarea style="height:150px;width:500px"  type='text' name='instructions' id='instructions'></textarea><br><br>
+    <button type='submit'>Submit</button>
+  </form>
